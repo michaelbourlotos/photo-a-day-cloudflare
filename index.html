@@ -154,35 +154,8 @@
             const galleryDiv = document.createElement('div');
             galleryDiv.className = 'col-6 col-sm-4 col-md-3 col-lg-2 item';
             
-            // Create image element to preload and handle loading state
-            const img = new Image();
-            img.onload = function() {
-              const imgElement = galleryDiv.querySelector('img');
-              const skeletonElement = galleryDiv.querySelector('.loading-skeleton');
-              
-              if (imgElement) {
-                imgElement.classList.add('loaded');
-              }
-              
-              // Hide skeleton
-              if (skeletonElement) {
-                skeletonElement.style.display = 'none';
-              }
-            };
-            
-            img.onerror = function() {
-              // Hide skeleton on error too
-              const skeletonElement = galleryDiv.querySelector('.loading-skeleton');
-              if (skeletonElement) {
-                skeletonElement.style.display = 'none';
-              }
-            };
-            
-            img.src = photo.url;
-            
             galleryDiv.innerHTML = `
               <a href="${photo.url}" data-lightbox="photos" data-title="${photo.title} | ${photo.date}">
-                <div class="loading-skeleton"></div>
                 <img class="img-fluid" src="${photo.url}" loading="lazy" alt="${photo.title}">
               </a>
             `;
