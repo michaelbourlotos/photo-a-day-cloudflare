@@ -28,12 +28,12 @@ body {
   font-family: "Quicksand", sans-serif;
 }
 
-.carousel-container {
+/* .carousel-container {
   width: 100%;
   padding-block: 3rem;
   min-height: 200px;
   background-color: #f8f9fa;
-}
+} */
 
 .swiper {
   width: 100%;
@@ -47,6 +47,8 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+  padding-block: 2rem;
+  background-color: #f7f7f7;
 }
 
 .swiper-slide img {
