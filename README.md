@@ -64,10 +64,6 @@ photoDaily-cloudflare/
 │   └── api/
 │       ├── photos.js       # Photos API endpoint
 │       └── upload.js       # Upload API endpoint
-├── database/
-│   └── schema.sql          # Database schema
-├── migrations/
-│   └── 0001_initial.sql    # Initial database migration
 ├── wrangler.toml           # Cloudflare configuration
 └── package.json            # Project dependencies
 ```
