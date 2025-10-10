@@ -35,10 +35,10 @@ body {
   background-color: #f8f9fa;
 } */
 
-.swiper {
+/* .swiper {
   width: 100%;
   height: 100%;
-}
+} */
 
 .swiper-slide {
   text-align: center;
@@ -49,6 +49,11 @@ body {
   align-items: center;
   padding-block: 2rem;
   background-color: #f7f7f7;
+  width: 100%;
+  max-width: 100%;
+  max-height: 100vh;
+  min-height: 0;
+  min-width: 0;
 }
 
 .swiper-slide img {
