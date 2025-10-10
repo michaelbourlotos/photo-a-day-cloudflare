@@ -44,12 +44,6 @@ body {
 }
 
 .swiper-slide {
-  text-align: center;
-  font-size: 18px;
-  background: #444;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   padding-block: 2rem;
   background-color: #f7f7f7;
 }
