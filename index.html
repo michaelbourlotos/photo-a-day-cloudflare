@@ -12,9 +12,10 @@
 
     <link rel="stylesheet" href="styles/main.css" />
     <link rel="stylesheet" href="styles/gallery.css">
-    <link rel="stylesheet" href="styles/slick.css" />
-    <link rel="stylesheet" href="styles/slick-theme.css" />
     <link rel="stylesheet" href="styles/lightbox.min.css"/>
+    
+    <!-- Swiper CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
 
     <title>PHOTOS</title>
   </head>
@@ -44,8 +45,15 @@
 
   <body class="bg-light">
     <div class="bg-light">   
-      <section class="carousel center slider" id="carousel-container">
-        <!-- Photos will be loaded here via JavaScript -->
+      <section class="carousel-container">
+        <div class="swiper" id="photo-swiper">
+          <div class="swiper-wrapper" id="carousel-container">
+            <!-- Photos will be loaded here via JavaScript -->
+          </div>
+          <!-- Navigation buttons -->
+          <div class="swiper-button-next"></div>
+          <div class="swiper-button-prev"></div>
+        </div>
       </section>
   </div>
  
@@ -91,7 +99,8 @@
 
     <script src="js/lightbox.min.js"></script>
 
-    <script type="text/javascript" src="js/slick.js"></script>
+    <!-- Swiper JS -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script>
     lightbox.option({
       'fitImagesInViewport':true,
@@ -100,38 +109,23 @@
 </script>
 
     <script>
+      // Global variables
+      let photoSwiper = null;
+      
       // Global functions to handle carousel image loading
       function handleCarouselImageLoad(img) {
-        const aspectRatio = img.naturalWidth / img.naturalHeight;
-        let imgClass = '';
-        let skeletonClass = '';
-        
-        // Determine if image is square or landscape
-        if (aspectRatio >= 0.9 && aspectRatio <= 1.1) {
-          // Square image (aspect ratio close to 1:1)
-          imgClass = 'square';
-          skeletonClass = 'square';
-        } else if (aspectRatio > 1.1) {
-          // Landscape image (wider than tall)
-          imgClass = 'landscape';
-          skeletonClass = 'landscape';
-        }
-        // Portrait images keep empty class
-        
-        // Apply classes
-        img.className = imgClass;
+        // Simply mark image as loaded
         img.classList.add('loaded');
         
-        // Update skeleton class and hide it
+        // Hide skeleton
         const skeletonElement = img.parentElement.querySelector('.loading-skeleton');
         if (skeletonElement) {
-          skeletonElement.className = `loading-skeleton ${skeletonClass}`;
           skeletonElement.style.display = 'none';
         }
         
-        // Show image if Slick is initialized
-        if ($('.center').hasClass('slick-initialized')) {
-          img.style.display = 'block';
+        // Update Swiper if it exists
+        if (photoSwiper) {
+          photoSwiper.update();
         }
       }
       
@@ -167,6 +161,7 @@
           
           photos.forEach(photo => {
             const slideDiv = document.createElement('div');
+            slideDiv.className = 'swiper-slide';
             
             slideDiv.innerHTML = `
               <a href="${photo.url}" data-lightbox="photos" data-title="${photo.title} | ${photo.date}">
@@ -220,64 +215,65 @@
             galleryContainer.appendChild(galleryDiv);
           });
 
-          // Initialize slick carousel after adding content
+          // Initialize Swiper carousel after adding content
           setTimeout(() => {
             try {
-              if ($('.center').hasClass('slick-initialized')) {
-                $('.center').slick('unslick');
+              // Destroy existing Swiper if it exists
+              if (photoSwiper) {
+                photoSwiper.destroy(true, true);
               }
               
-              $('.center').slick({
-              centerMode: true,
-              slidesToShow: 5,
-              slidesToScroll: 1,
-              dots: false,
-              cssEase: "linear",
-              variableWidth: true,
-              variableHeight: false,
-              arrows: true,
-              infinite: true,
-              swipe: true,
-              touchMove: true,
-              touchThreshold: 5,
-              swipeToSlide: true,
-              adaptiveHeight: false,
-              mobileFirst: true,
-              responsive: [
-                {
-                  breakpoint: 1024,
-                  settings: {
-                    slidesToShow: 3,
-                    slidesToScroll: 1,
-                    dots: false
-                  }
+              // Initialize Swiper with optimized settings
+              photoSwiper = new Swiper('#photo-swiper', {
+                // Basic settings
+                slidesPerView: 'auto',
+                centeredSlides: true,
+                spaceBetween: 20,
+                
+                // Navigation
+                navigation: {
+                  nextEl: '.swiper-button-next',
+                  prevEl: '.swiper-button-prev',
                 },
-                {
-                  breakpoint: 600,
-                  settings: {
-                    arrows: false,
-                    slidesToShow: 1,
-                    slidesToScroll: 1
-                  }
-                },
-                {
-                  breakpoint: 480,
-                  settings: {
-                    arrows: false,
-                    slidesToShow: 1,
-                    slidesToScroll: 1
+                
+                // Touch settings
+                touchRatio: 1,
+                touchAngle: 45,
+                grabCursor: true,
+                touchStartPreventDefault: false,
+                
+                // Responsive breakpoints
+                breakpoints: {
+                  320: {
+                    slidesPerView: 1,
+                    spaceBetween: 10,
+                    centeredSlides: true,
+                  },
+                  640: {
+                    slidesPerView: 2,
+                    spaceBetween: 15,
+                    centeredSlides: true,
+                  },
+                  768: {
+                    slidesPerView: 3,
+                    spaceBetween: 20,
+                    centeredSlides: true,
+                  },
+                  1024: {
+                    slidesPerView: 4,
+                    spaceBetween: 20,
+                    centeredSlides: true,
+                  },
+                  1200: {
+                    slidesPerView: 5,
+                    spaceBetween: 20,
+                    centeredSlides: true,
                   }
                 }
-              ]
-            });
-            
-            // Show all loaded images after Slick initializes
-            $('.center img.loaded').show();
-            
+              });
+              
             } catch (error) {
-              console.error('Slick carousel error:', error);
-              // Fallback: show images without carousel
-              $('.center img').show();
+              console.error('Swiper initialization error:', error);
             }
           }, 100);
 
