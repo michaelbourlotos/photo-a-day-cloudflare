@@ -37,8 +37,7 @@ body {
 
 .slider {
   width: 100%;
-  margin: 4% auto;
-  padding: 5%;
+  padding-block: 3rem;
   align-items: center;
   min-height: 200px;
   background-color: #f8f9fa;
