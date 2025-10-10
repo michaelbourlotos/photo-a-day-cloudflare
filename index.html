@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Oswald&family=Quicksand&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="styles/main.css" />
+    <link rel="stylesheet" href="styles/gallery.css">
+    <link rel="stylesheet" href="styles/slick.css" />
+    <link rel="stylesheet" href="styles/slick-theme.css" />
+    <link rel="stylesheet" href="styles/lightbox.min.css"/>
+
+    <title>PHOTO A DAY</title>
+  </head>
+
+  <nav class="navbar navbar-expand navbar-dark bg-dark py-2" aria-label="Tenth navbar example">
+    <div class="container-fluid">
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample08" aria-controls="navbarsExample08" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse justify-content-md-center" id="navbarsExample08">
+        <ul class="navbar-nav">
+        <li class="nav-item ">
+            <a class="nav-link active" href="#">Photo A Day</a>
+          </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#gallery">Gallery</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="mailto: michaelbourlotos@gmail.com">Contact</a>
+          </li>
+        
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <body class="bg-light">
+    <div class="bg-light">   
+      <section class="carousel center slider" id="carousel-container">
+        <!-- Photos will be loaded here via JavaScript -->
+      </section>
+  </div>
+ 
+
+    <!--Gallery-->
+<div class="photo-gallery bg-dark">
+  <div class="container">
+      <div class="intro">
+          <h3 class="text-center" id="gallery">Gallery</h3>
+      
+      </div>
+      <div class="row photos" id="gallery-container">
+        <!-- Photos will be loaded here via JavaScript -->
+      </div>
+  </div>
+</div>
+
+<!-- Footer -->
+<footer class="footer-light bg-secondary py-2">
+
+  
+  <div class="footer-copyright text-center py-3"><p>Copyright &copy; <script>document.write(new Date().getFullYear())</script> <a href="https://www.michaelbourlotos.com"> Michael Bourlotos</a> All Rights Reserved</p>
+  <a href="upload.html" class="upload ">Upload</a>
+  </div>
+  
+
+</footer>
+
+<!-- SCRIPTSSSSSSS -->
+    <script
+      src="https://code.jquery.com/jquery-3.6.0.js"
+      integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+      crossorigin="anonymous"
+    ></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/js/bootstrap.bundle.min.js"></script>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+      crossorigin="anonymous"
+    ></script>
+
+    <script src="js/lightbox.min.js"></script>
+
+    <script type="text/javascript" src="js/slick.js"></script>
+    <script>
+    lightbox.option({
+      'fitImagesInViewport':true,
+      'showImageNumberLabel':false
+    })
+</script>
+
+    <script>
+      $(document).ready(function () {
+        // Load photos from API
+        loadPhotos();
+        
+        $(".center").slick({
+          lazyLoad: 'ondemand',
+          centerMode: true,
+          slidesToShow: 5,
+          slidesToScroll: 1,
+          dots: false,
+          cssEase: "linear",
+          variableWidth: false,
+          variableHeight: false,
+          responsive: [
+    {
+      breakpoint: 1024,
+      settings: {
+        slidesToShow: 3,
+        slidesToScroll: 1,
+        dots: false
+      }
+    },
+    {
+      breakpoint: 600,
+      settings: {
+        arrows: false,
+        slidesToShow: 1,
+        slidesToScroll: 1
+      }
+    },
+    {
+      breakpoint: 480,
+      settings: {
+        arrows: false,
+        slidesToShow: 1,
+        slidesToScroll: 1
+      }
+    }
+    // You can unslick at a given breakpoint now by adding:
+    // settings: "unslick"
+    // instead of a settings object
+  ]
+        });
+      });
+
+      async function loadPhotos() {
+        try {
+          const response = await fetch('/api/photos');
+          const photos = await response.json();
+          
+          // Load carousel photos
+          const carouselContainer = document.getElementById('carousel-container');
+          carouselContainer.innerHTML = '';
+          
+          photos.forEach(photo => {
+            const slideDiv = document.createElement('div');
+            slideDiv.innerHTML = `
+              <a href="${photo.url}" data-lightbox="photos" data-title="${photo.title} | ${photo.date}">
+                <img data-lazy="${photo.url}">
+              </a>
+            `;
+            carouselContainer.appendChild(slideDiv);
+          });
+
+          // Load gallery photos
+          const galleryContainer = document.getElementById('gallery-container');
+          galleryContainer.innerHTML = '';
+          
+          photos.forEach(photo => {
+            const galleryDiv = document.createElement('div');
+            galleryDiv.className = 'col-6 col-sm-4 col-md-3 col-lg-2 item';
+            galleryDiv.innerHTML = `
+              <a href="${photo.url}" data-lightbox="photos" data-title="${photo.title} | ${photo.date}">
+                <img class="img-fluid" src="${photo.url}" loading="lazy" alt="${photo.title}">
+              </a>
+            `;
+            galleryContainer.appendChild(galleryDiv);
+          });
+
+          // Refresh slick carousel after adding content
+          if ($('.center').hasClass('slick-initialized')) {
+            $('.center').slick('unslick');
+          }
+          $('.center').slick({
+            lazyLoad: 'ondemand',
+            centerMode: true,
+            slidesToShow: 5,
+            slidesToScroll: 1,
+            dots: false,
+            cssEase: "linear",
+            variableWidth: false,
+            variableHeight: false,
+            responsive: [
+              {
+                breakpoint: 1024,
+                settings: {
+                  slidesToShow: 3,
+                  slidesToScroll: 1,
+                  dots: false
+                }
+              },
+              {
+                breakpoint: 600,
+                settings: {
+                  arrows: false,
+                  slidesToShow: 1,
+                  slidesToScroll: 1
+                }
+              },
+              {
+                breakpoint: 480,
+                settings: {
+                  arrows: false,
+                  slidesToShow: 1,
+                  slidesToScroll: 1
+                }
+              }
+            ]
+          });
+
+        } catch (error) {
+          console.error('Error loading photos:', error);
+        }
+      }
+    </script>
+
+
+  </body>
+</html>

@@ -1,0 +1,151 @@
+/* Combined CSS from SCSS files */
+
+/* Globals */
+html {
+  font-size: 100%;
+  box-sizing: border-box;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* Main styles */
+body {
+  font-family: "Oswald", sans-serif;
+  font-family: "Quicksand", sans-serif;
+}
+
+.slider {
+  width: 100%;
+  margin: 4% auto;
+  padding: 5%;
+  align-items: center;
+}
+
+.slick-slide {
+  margin: 0px 10px;
+}
+
+.slick-slide img {
+  width: 100%;
+}
+
+.slick-prev:before,
+.slick-next:before {
+  color: black;
+}
+
+.slick-slide {
+  transition: all ease-in-out 0.3s;
+  opacity: 0.25;
+}
+
+.slick-active {
+  opacity: 0.25;
+}
+
+.slick-current {
+  opacity: 1;
+}
+
+.upload {
+  text-decoration: none;
+  color: #6c757d;
+}
+
+.intro {
+  padding-top: 40px;
+}
+
+footer a {
+  color: #f7f7f7;
+  text-decoration: none;
+}
+
+footer a:hover {
+  color: #292b2c;
+}
+
+.today {
+  width: 100%;
+  max-width: 18.75rem;
+  margin: 0px auto;
+}
+
+.item:hover {
+  opacity: 0.75;
+}
+
+.todayWidth {
+  max-width: 62.5rem;
+}
+
+.slide-image {
+  max-height: 500px;
+}
+
+/* Gallery styles */
+.photo-gallery {
+  color: white;
+  background-color: #313437;
+}
+
+.photo-gallery p {
+  color: #7d8285;
+}
+
+.photo-gallery h2 {
+  font-weight: bold;
+  margin-bottom: 40px;
+  padding-top: 40px;
+  color: inherit;
+}
+
+.photo-gallery .intro {
+  font-size: 16px;
+  max-width: 500px;
+  margin: 0 auto 40px;
+}
+
+.photo-gallery .intro p {
+  margin-bottom: 0;
+}
+
+.photo-gallery .photos {
+  padding-bottom: 20px;
+}
+
+.photo-gallery .item {
+  padding-bottom: 30px;
+}
+
+/* Responsive styles */
+@media (max-width: 993px) {
+  .small_center {
+    text-align: center;
+  }
+  .hide {
+    display: none;
+  }
+}
+
+@media (max-width: 767px) {
+  .photo-gallery h2 {
+    margin-bottom: 25px;
+    padding-top: 25px;
+    font-size: 24px;
+  }
+}

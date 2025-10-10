@@ -1,0 +1,25 @@
+{
+  "name": "photo-a-day-cloudflare",
+  "version": "1.0.0",
+  "description": "Photo A Day site migrated to Cloudflare Pages with D1 and R2",
+  "main": "functions/api.js",
+  "scripts": {
+    "dev": "wrangler pages dev",
+    "deploy": "wrangler pages deploy",
+    "db:create": "wrangler d1 create photo-a-day-db",
+    "db:migrate": "wrangler d1 migrations apply photo-a-day-db",
+    "db:seed": "wrangler d1 execute photo-a-day-db --file=./database/migrate.sql"
+  },
+  "devDependencies": {
+    "wrangler": "^3.0.0"
+  },
+  "keywords": [
+    "cloudflare",
+    "pages",
+    "d1",
+    "r2",
+    "photo-gallery"
+  ],
+  "author": "Michael Bourlotos",
+  "license": "MIT"
+}

@@ -1,0 +1,57 @@
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.slider {
+  width: 100%;
+  margin: 4% auto;
+}
+
+.slick-slide {
+  margin: 0px 10px;
+}
+
+.slick-slide img {
+  width: 100%;
+}
+
+
+.slick-prev:before,
+.slick-next:before {
+  color: black;
+}
+
+.slick-slide {
+  transition: all ease-in-out 0.3s;
+  opacity: 0.25;
+}
+
+.slick-active {
+  opacity: 0.25;
+}
+
+.slick-current {
+  opacity: 1;
+}
+
+.upload {
+  text-decoration: none;
+  color: #6c757d;}
+
+.intro {
+  padding-top: 40px;
+}
+
+footer a {
+  color: #f7f7f7;
+  text-decoration: none;
+}
+footer a:hover {
+  color: #292b2c;
+}
