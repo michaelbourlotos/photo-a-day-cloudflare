@@ -40,3 +40,11 @@
   padding-bottom: 30px;
 }
 
+.photo-gallery .item img {
+  opacity: 1;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.photo-gallery .item img.loaded {
+  opacity: 1;  /* Only became visible when 'loaded' class was added */
+}
