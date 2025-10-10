@@ -222,11 +222,12 @@
 
           // Initialize slick carousel after adding content
           setTimeout(() => {
-            if ($('.center').hasClass('slick-initialized')) {
-              $('.center').slick('unslick');
-            }
-            
-            $('.center').slick({
+            try {
+              if ($('.center').hasClass('slick-initialized')) {
+                $('.center').slick('unslick');
+              }
+              
+              $('.center').slick({
               centerMode: true,
               slidesToShow: 5,
               slidesToScroll: 1,
@@ -240,6 +241,8 @@
               touchMove: true,
               touchThreshold: 5,
               swipeToSlide: true,
+              adaptiveHeight: false,
+              mobileFirst: true,
               responsive: [
                 {
                   breakpoint: 1024,
@@ -271,11 +274,11 @@
             // Show all loaded images after Slick initializes
             $('.center img.loaded').show();
             
-            // Optimize touch performance
-            $('.center').on('touchstart', function(e) {
-              // Allow default touch behavior for better performance
-              return true;
-            });
+            } catch (error) {
+              console.error('Slick carousel error:', error);
+              // Fallback: show images without carousel
+              $('.center img').show();
+            }
           }, 100);
 
         } catch (error) {
