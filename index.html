@@ -99,6 +99,49 @@
 </script>
 
     <script>
+      // Global functions to handle carousel image loading
+      function handleCarouselImageLoad(img) {
+        const aspectRatio = img.naturalWidth / img.naturalHeight;
+        let imgClass = '';
+        let skeletonClass = '';
+        
+        // Determine if image is square or landscape
+        if (aspectRatio >= 0.9 && aspectRatio <= 1.1) {
+          // Square image (aspect ratio close to 1:1)
+          imgClass = 'square';
+          skeletonClass = 'square';
+        } else if (aspectRatio > 1.1) {
+          // Landscape image (wider than tall)
+          imgClass = 'landscape';
+          skeletonClass = 'landscape';
+        }
+        // Portrait images keep empty class
+        
+        // Apply classes
+        img.className = imgClass;
+        img.classList.add('loaded');
+        
+        // Update skeleton class and hide it
+        const skeletonElement = img.parentElement.querySelector('.loading-skeleton');
+        if (skeletonElement) {
+          skeletonElement.className = `loading-skeleton ${skeletonClass}`;
+          skeletonElement.style.display = 'none';
+        }
+        
+        // Show image if Slick is initialized
+        if ($('.center').hasClass('slick-initialized')) {
+          img.style.display = 'block';
+        }
+      }
+      
+      function handleCarouselImageError(img) {
+        // Hide skeleton on error
+        const skeletonElement = img.parentElement.querySelector('.loading-skeleton');
+        if (skeletonElement) {
+          skeletonElement.style.display = 'none';
+        }
+      }
+
       $(document).ready(function () {
         // Load photos from API
         loadPhotos();
@@ -120,9 +163,11 @@
           
           photos.forEach(photo => {
             const slideDiv = document.createElement('div');
+            
             slideDiv.innerHTML = `
               <a href="${photo.url}" data-lightbox="photos" data-title="${photo.title} | ${photo.date}">
-                <img data-lazy="${photo.url}" alt="${photo.title}">
+                <div class="loading-skeleton"></div>
+                <img src="${photo.url}" alt="${photo.title}" onload="handleCarouselImageLoad(this)" onerror="handleCarouselImageError(this)">
               </a>
             `;
             carouselContainer.appendChild(slideDiv);
@@ -135,8 +180,36 @@
           photos.forEach(photo => {
             const galleryDiv = document.createElement('div');
             galleryDiv.className = 'col-6 col-sm-4 col-md-3 col-lg-2 item';
+            
+            // Create image element to preload and handle loading state
+            const img = new Image();
+            img.onload = function() {
+              const imgElement = galleryDiv.querySelector('img');
+              const skeletonElement = galleryDiv.querySelector('.loading-skeleton');
+              
+              if (imgElement) {
+                imgElement.classList.add('loaded');
+              }
+              
+              // Hide skeleton
+              if (skeletonElement) {
+                skeletonElement.style.display = 'none';
+              }
+            };
+            
+            img.onerror = function() {
+              // Hide skeleton on error too
+              const skeletonElement = galleryDiv.querySelector('.loading-skeleton');
+              if (skeletonElement) {
+                skeletonElement.style.display = 'none';
+              }
+            };
+            
+            img.src = photo.url;
+            
             galleryDiv.innerHTML = `
               <a href="${photo.url}" data-lightbox="photos" data-title="${photo.title} | ${photo.date}">
+                <div class="loading-skeleton"></div>
                 <img class="img-fluid" src="${photo.url}" loading="lazy" alt="${photo.title}">
               </a>
             `;
@@ -150,13 +223,12 @@
             }
             
             $('.center').slick({
-              lazyLoad: 'ondemand',
               centerMode: true,
               slidesToShow: 5,
               slidesToScroll: 1,
               dots: false,
               cssEase: "linear",
-              variableWidth: false,
+              variableWidth: true,
               variableHeight: false,
               arrows: true,
               infinite: true,
@@ -187,6 +259,9 @@
                 }
               ]
             });
+            
+            // Show all loaded images after Slick initializes
+            $('.center img.loaded').show();
           }, 100);
 
         } catch (error) {
