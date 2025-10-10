@@ -111,32 +111,6 @@
     <script>
       // Global variables
       let photoSwiper = null;
-      
-      // Global functions to handle carousel image loading
-      function handleCarouselImageLoad(img) {
-        // Simply mark image as loaded
-        img.classList.add('loaded');
-        
-        // Hide skeleton
-        const skeletonElement = img.parentElement.querySelector('.loading-skeleton');
-        if (skeletonElement) {
-          skeletonElement.style.display = 'none';
-        }
-        
-        // Update Swiper if it exists
-        if (photoSwiper) {
-          photoSwiper.update();
-        }
-      }
-      
-      function handleCarouselImageError(img) {
-        // Hide skeleton on error
-        const skeletonElement = img.parentElement.querySelector('.loading-skeleton');
-        if (skeletonElement) {
-          skeletonElement.style.display = 'none';
-        }
-      }
-
       $(document).ready(function () {
         // Set current year
         document.getElementById('current-year').textContent = new Date().getFullYear();
@@ -165,8 +139,8 @@
             
             slideDiv.innerHTML = `
               <a href="${photo.url}" data-lightbox="photos" data-title="${photo.title} | ${photo.date}">
-                <div class="loading-skeleton"></div>
-                <img src="${photo.url}" alt="${photo.title}" onload="handleCarouselImageLoad(this)" onerror="handleCarouselImageError(this)">
+                <img src="${photo.url}" alt="${photo.title}" loading="lazy">
+                <div class="swiper-lazy-preloader"></div>
               </a>
             `;
             carouselContainer.appendChild(slideDiv);
@@ -223,13 +197,14 @@
                 photoSwiper.destroy(true, true);
               }
               
-              // Initialize Swiper with optimized settings
+              // Initialize Swiper with mobile-optimized settings
               photoSwiper = new Swiper('#photo-swiper', {
                 // Basic settings
                 slidesPerView: 'auto',
                 centeredSlides: true,
                 spaceBetween: 20,
                 loop: true,
+                speed: 300,
                 
                 // Navigation
                 navigation: {
@@ -237,11 +212,18 @@
                   prevEl: '.swiper-button-prev',
                 },
                 
-                // Touch settings
+                // Mobile-optimized touch settings
                 touchRatio: 1,
                 touchAngle: 45,
                 grabCursor: true,
                 touchStartPreventDefault: false,
+                touchMoveStopPropagation: true,
+                threshold: 5,
+                touchReleaseOnEdges: true,
+                
+
+                lazyPreloadPrevNext: 8,
+                lazyPreloaderClass: 'swiper-lazy-preloader',
                 
                 // Responsive breakpoints
                 breakpoints: {

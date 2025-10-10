@@ -44,6 +44,7 @@ body {
 }
 
 .swiper-slide {
+  margin:auto;
   padding-block: 2rem;
   background-color: #f7f7f7;
 }
