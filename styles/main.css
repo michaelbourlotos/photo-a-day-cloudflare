@@ -26,6 +26,13 @@ body {
 body {
   font-family: "Oswald", sans-serif;
   font-family: "Quicksand", sans-serif;
+  touch-action: manipulation;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
 .slider {
@@ -35,10 +42,14 @@ body {
   align-items: center;
   min-height: 200px;
   background-color: #f8f9fa;
+  touch-action: pan-x;
+  -webkit-overflow-scrolling: touch;
 }
 
 .slick-slide {
   margin: 0px 10px;
+  touch-action: pan-x;
+  will-change: transform;
 }
 
 .slick-slide img {
@@ -106,8 +117,24 @@ body {
   color: black;
 }
 
+/* Optimize Slick carousel performance */
+.slick-track {
+  will-change: transform;
+}
+
+.slick-list {
+  touch-action: pan-x;
+  -webkit-overflow-scrolling: touch;
+}
+
+.slick-prev,
+.slick-next {
+  touch-action: manipulation;
+  will-change: transform;
+}
+
 .slick-slide {
-  transition: all ease-in-out 0.3s;
+  transition: all ease-in-out 0.2s;
   opacity: 0.7;
 }
 
