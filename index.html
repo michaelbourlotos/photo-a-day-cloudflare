@@ -146,7 +146,11 @@
 
       async function loadPhotos() {
         try {
-          const response = await fetch('/api/photos');
+          // Use production API for local development
+          const apiUrl = window.location.hostname === 'localhost' 
+            ? 'https://photos.michaelbourlotos.com/api/photos'
+            : '/api/photos';
+          const response = await fetch(apiUrl);
           const photos = await response.json();
           
           // Load carousel photos

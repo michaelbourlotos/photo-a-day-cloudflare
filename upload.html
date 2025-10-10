@@ -102,6 +102,12 @@
         document.getElementById('uploadForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
+            // Prompt for password
+            const password = prompt('Enter upload password:');
+            if (!password) {
+                return; // User cancelled
+            }
+            
             const submitBtn = document.getElementById('submitBtn');
             const submitText = document.getElementById('submitText');
             const loadingSpinner = document.getElementById('loadingSpinner');
@@ -119,8 +125,15 @@
             formData.append('file', document.getElementById('file').files[0]);
             
             try {
-                const response = await fetch('/api/upload', {
+                // Use production API for local development
+                const apiUrl = window.location.hostname === 'localhost' 
+                  ? 'https://photos.michaelbourlotos.com/api/upload'
+                  : '/api/upload';
+                const response = await fetch(apiUrl, {
                     method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${password}`
+                    },
                     body: formData
                 });
                 

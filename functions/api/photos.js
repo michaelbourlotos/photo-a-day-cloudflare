@@ -9,6 +9,8 @@ export async function onRequest(context) {
     'Access-Control-Allow-Headers': 'Content-Type',
   };
 
+  console.log('API called, env.DB exists:', !!env.DB);
+
   if (context.request.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
   }
@@ -16,9 +18,10 @@ export async function onRequest(context) {
   try {
     // Get all photos ordered by date
     const stmt = env.DB.prepare('SELECT * FROM photos ORDER BY datePhotos DESC');
-    const photos = await stmt.all();
+    console.log('Query prepared');
     
-    console.log('Photos query result:', photos);
+    const photos = await stmt.all();
+    console.log('Query executed, results:', photos);
     
     // Transform photos to include R2 URLs
     const photosWithUrls = photos.results.map(photo => ({
@@ -37,11 +40,10 @@ export async function onRequest(context) {
     console.error('Database error:', error);
     return new Response(JSON.stringify({ 
       error: 'Failed to fetch photos',
-      details: error.message,
-      stack: error.stack
+      details: error.message 
     }), {
       status: 500,
-      headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+      headers: { 'Content-Type': 'application/json' }
     });
   }
 }

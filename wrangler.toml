@@ -16,3 +16,18 @@ bucket_name = "photo-a-day-images"
 # Environment variables
 [vars]
 R2_PUBLIC_URL = "https://pub-1f5d91e3b4ca4a649f140c22f40dd7e5.r2.dev"
+
+# Development environment - use remote resources
+[env.development]
+[[env.development.d1_databases]]
+binding = "DB"
+database_name = "photo-a-day-db"
+database_id = "cd034ff2-9bdf-43f9-a4d5-05e28c84d965"
+preview_database_id = "cd034ff2-9bdf-43f9-a4d5-05e28c84d965"
+
+[[env.development.r2_buckets]]
+binding = "R2_BUCKET"
+bucket_name = "photo-a-day-images"
+
+[env.development.vars]
+R2_PUBLIC_URL = "https://pub-1f5d91e3b4ca4a649f140c22f40dd7e5.r2.dev"
